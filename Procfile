@@ -1,1 +1,1 @@
-web: python app.py $PORT
+web: gunicorn ChC.wsgi:application --log-file -
