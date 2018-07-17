@@ -1,1 +1,1 @@
-web: gunicorn ChC.wsgi:application --log-file -
+web: gunicorn ChC.wsgi
