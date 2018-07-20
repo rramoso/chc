@@ -1,1 +1,1 @@
-web: gunicorn ChC.wsgi --log-file -
+web: gunicorn chinola.wsgi 
