@@ -1,5 +1,5 @@
 """
-WSGI config for ChC project.
+WSGI config for chinola project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
