@@ -7,4 +7,3 @@ class Account(models.Model):
     zipcode = models.CharField(max_length=5)
     city = models.CharField(max_length=55)
     state = models.CharField(max_length=55)
-    country = models.CharField(max_length=55)
