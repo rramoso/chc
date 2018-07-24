@@ -25,7 +25,7 @@ SECRET_KEY = '7fklu*we3xb@fp421fdq!jvpv04-dr#$wf!bb9p!xwv97+sul!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['chc-test.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1' ,'chc-test.herokuapp.com']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'chinola',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,10 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+import dj_database_url
 
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

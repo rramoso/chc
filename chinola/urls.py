@@ -20,5 +20,6 @@ from . import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('chinola/',  views.index, name = 'index'),
+    path('phone/',  views.phone, name = 'phone'),
     
 ]
