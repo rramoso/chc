@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from . import templates
-from scripts import *
+# from scripts import *
 
 def index(request):
 
