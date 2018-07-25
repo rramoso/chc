@@ -3,3 +3,4 @@ gunicorn==19.6.0
 dj-database-url==0.4.2
 psycopg2==2.7.1
 pandas==0.20.3
+django_pandas==0.5.1
