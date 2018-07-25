@@ -20,13 +20,13 @@ import datetime
 # Query: Select Id, Name, RecordTypeId, ParentId, BillingState, BillingPostalCode, BillingCountry, ShippingState, ShippingPostalCode, ShippingCountry, Phone, Fax, Website, Market__c FROM Account 
 # Assign the accounts from a csv file using dataloader to download
 
-values = pd.read_csv('./ACBJ_Prod_Contact_20180208.csv', low_memory = False)
+# values = pd.read_csv('./ACBJ_Prod_Contact_20180208.csv', low_memory = False)
 
 
 # In[6]:
 
 
-phone_field = 'PHONE'
+# phone_field = 'PHONE'
 
 
 # In[7]:
@@ -71,22 +71,48 @@ def tidy_phone_ext(bad_num):
         return np.bad_num
 
 
+
 # In[9]:
 
 
-# Clean up phone number
+# [sourcecode language="python"]
+# # Full path and name to your csv file 
+# csv_filepathname="/home/mitch/projects/wantbox.com/wantbox/zips/data/zipcodes.csv" 
+# # Full path to your django project directory 
+# your_djangoproject_home="/home/mitch/projects/wantbox.com/wantbox/" 
 
-values[phone_field+ '__clean'] = values[phone_field].apply(tidy_phone_ext)
+# import sys,os sys.path.append(your_djangoproject_home) 
+
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'settings' 
+
+# from zips.models import ZipCode 
+# import csv 
+# dataReader = csv.reader(open(csv_filepathname), delimiter=',', quotechar='"') 
+# for row in dataReader: 
+#     if row[0] != 'ZIPCODE': 
+# # Ignore the header row, import everything 
+#     else:
+#         zipcode = ZipCode() 
+#         zipcode.zipcode = row[0] 
+#         zipcode.city = row[1] 
+#         zipcode.statecode = row[2] 
+#         zipcode.statename = row[3] 
+#         zipcode.save()
 
 
-# In[13]:
+# # Clean up phone number
+
+# values[phone_field+ '__clean'] = values[phone_field].apply(tidy_phone_ext)
 
 
-result = values[['ID',phone_field, phone_field + '__clean']].copy()
+# # In[13]:
 
 
-# In[14]:
+# result = values[['ID',phone_field, phone_field + '__clean']].copy()
 
 
-result.to_csv(phone_field+' -- cleaned '+ datetime.date.today().strftime("%Y%m%d") +'.csv', index = False, quoting = csv.QUOTE_ALL)
+# # In[14]:
+
+
+# result.to_csv(phone_field+' -- cleaned '+ datetime.date.today().strftime("%Y%m%d") +'.csv', index = False, quoting = csv.QUOTE_ALL)
 

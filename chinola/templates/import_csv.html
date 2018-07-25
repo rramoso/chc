@@ -2,8 +2,12 @@
 <html>
 <body>
 
-<form action="/phone" >
-  <input type="submit">
+
+<form action="/chinola/" method="post" enctype="multipart/form-data"> {%csrf_token %}
+
+    <input type="file" name="csv_file" />
+    <input type="submit" value="Upload" />
+
 </form>
 
 </body>
