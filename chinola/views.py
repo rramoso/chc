@@ -1,16 +1,16 @@
+
+import pandas as pd
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadFileForm
 from . import templates
-import pandas as pd
 import re
 import csv
 from .models import Account
 from .scripts.Phone_standardization import *
 from django_pandas.io import read_frame
 from io import StringIO
-
 def index(request):
 	print('tamo GET: ')
 	if request.method == "POST":
