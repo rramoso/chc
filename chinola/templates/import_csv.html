@@ -1,14 +1,46 @@
-<!DOCTYPE html>
-<html>
-<body>
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+
 
 
 <form action="/chinola/" method="post" enctype="multipart/form-data"> {%csrf_token %}
+
+	<div class="radio">
+	  <label><input type="radio" name="phone" checked>Phone</label>
+	</div>
+	<div class="radio disabled">
+	  <label><input type="radio" name="zip" disabled>Zipcode</label>
+	</div>
+	<div class="radio disabled">
+	  <label><input type="radio" name="name" disabled>Name</label>
+	</div>
+	<div class="radio disabled">
+	  <label><input type="radio" name="address" disabled>Address</label>
+	</div>
+	<div class="radio disabled">
+	  <label><input type="radio" name="specials" disabled>Special character</label>
+	</div>
 
     <input type="file" name="csv_file" />
     <input type="submit" value="Upload" />
 
 </form>
-
-</body>
-</html>
+	<!-- <table>
+	<tr>
+		{% for head in headers%}
+		<th> {{head}}</th>
+		{% endfor %}
+	</tr>
+	 {% for item in inserted_data %}
+	    <tr> 
+	        <td>{{ item.field1 }}</td>
+	        ...
+	        <td>{{ item.fieldN }}</td>
+	    </tr>
+    {% endfor %}
+    </table> -->
+{% endblock %}

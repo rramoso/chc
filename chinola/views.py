@@ -2,7 +2,7 @@
 import pandas as pd
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, StreamingHttpResponse
 from .forms import UploadFileForm
 from . import templates
 import re
@@ -11,21 +11,34 @@ from .models import Account
 from .scripts.Phone_standardization import *
 from django_pandas.io import read_frame
 from io import StringIO
+from django.template import Context, loader
+
 def index(request):
 	print('tamo GET: ')
 	if request.method == "POST":
 		print('tamo POST')
 		form = UploadFileForm(request.POST, request.FILES)
-		
+
+		phone  = request.POST.get('phone')
+
 		csv_file = request.FILES['csv_file']
 		file_data = csv_file.read().decode("utf-8")	
 		lines = file_data.split("\n")
-		
 		fields = lines[0].replace('"','').split(",")
 		n_fields = len(fields)
+
+
 		df = pd.read_csv(StringIO(file_data))
 		print(df.index)
-		data_dict = {}
+		
+		df['Phone_clean'] = df.PHONE.apply(tidy_phone_ext)
+		df[['ID','PHONE','Phone_clean']].to_csv('V2 DataTool - Phone Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
+		# print(request.POST.get('phone') == 'on')
+		fp = open('V2 DataTool - Phone Cleanse.csv', 'rb')
+		response = HttpResponse(fp.read(),content_type='text/csv')
+		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - Phone Cleanse.csv"'
+		fp.close()
+		return response
 
 		for line in lines:
 
