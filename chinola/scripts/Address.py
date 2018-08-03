@@ -9,11 +9,12 @@ import numpy as np
 import string
 import csv
 from unicodedata import category
+from django.conf import settings
 import re
 import datetime
 
 
-addresses = pd.read_csv('/Users/ricardoramos/Documents/Heroku:Python/chc/chinola/scripts/free-zipcode-database.csv',low_memory = False)
+addresses = pd.read_csv(settings.BASE_DIR+'/chinola/scripts/free-zipcode-database.csv',low_memory = False)
 addresses = addresses[addresses.LocationType == 'PRIMARY']
 states = {
         'AK': 'Alaska',
@@ -120,18 +121,18 @@ def getState(statecode):
 
 
 # code: Is the two-letter state code that will transform into the Full name.
-# 
-# country: Is the already clean and correct Full name of the Country. 
+#
+# country: Is the already clean and correct Full name of the Country.
 #                       Please be sure that match with the SF_countryStates dataframe's country list.
-# 
-# city: Is the already clean and correct Full name of the City. 
+#
+# city: Is the already clean and correct Full name of the City.
 #                       Please be sure that match with the SF_countryStates dataframe's city list.
-# 
-# 
-# 
-# Result: It will return the full name of the state based on the its two-letter code. 
+#
+#
+#
+# Result: It will return the full name of the state based on the its two-letter code.
 #                       Please be sure that match with the SF_countryStates dataframe's state list.
-# 
+#
 
 
 # In[10]:
@@ -139,7 +140,7 @@ def getState(statecode):
 
 cities = {}
 def stateNameByCode(code,country=np.nan,city=np.nan):
-    
+
     try:
         result = ''
         countries = SF_countryStates[SF_countryStates['State Code'] == code].Country.tolist()
@@ -148,22 +149,22 @@ def stateNameByCode(code,country=np.nan,city=np.nan):
             if country in countries:
                 n = countries.index(country)
                 result = names[n]
-                
+
                 if city is not np.nan and city not in cities:
                     cities[city] = {code : result}
                 elif city in cities:
                     cities[city][code] = result
-                    
+
                 return result
-            
+
             if len(countries) > 1:
                 for i in names:
                     cities[city] = {code:i}
-            
+
             result = names[0]
             cities[city] = {code : result}
             return result
-            
+
         elif city in cities.keys():
             if code is not np.nan:
                 result = cities[city][code]
@@ -194,4 +195,3 @@ def stateNameByCode(code,country=np.nan,city=np.nan):
 
 
 # result.to_csv(state_field+' -- cleaned '+ datetime.date.today().strftime("%Y%m%d") +'.csv', index = False)
-

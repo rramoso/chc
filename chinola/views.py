@@ -18,14 +18,14 @@ from io import StringIO
 from django.template import Context, loader
 
 def index(request):
-	
+
 	if request.method == "POST":
-		
+
 		form = UploadFileForm(request.POST, request.FILES)
 		radio = request.POST.get('optradio')
 
 		csv_file = request.FILES['csv_file']
-		file_data = csv_file.read().decode("utf-8")	
+		file_data = csv_file.read().decode("utf-8")
 		file_name = csv_file.name
 
 		lines = file_data.split("\n")
@@ -52,7 +52,7 @@ def index(request):
 
 
 def download_Load(df,radio,file_name):
-	if radio == 'phone':
+	if radio == 'Phone':
 
 		df['PHONE'] = df.PHONE.apply(tidy_phone_ext)
 		df[['ID','PHONE']].to_csv(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Phone Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
@@ -60,10 +60,10 @@ def download_Load(df,radio,file_name):
 		fp = open(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Phone Cleanse.csv', 'rb')
 		response = HttpResponse(fp.read(),content_type='text/csv')
 		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Phone Cleanse.csv"'
-		fp.close() 
-		return response 
+		fp.close()
+		return response
 
-	elif radio == 'zipcode':
+	elif radio == 'Zipcode':
 
 		df['POSTALCODE'] = df.POSTALCODE.apply(clean4zipcodes)
 
@@ -74,8 +74,8 @@ def download_Load(df,radio,file_name):
 		fp.close()
 		return response
 
-	elif radio == 'address':
-		
+	elif radio == 'Address':
+
 		# Records with zipcode but without state
 		df['STATECODE'] = np.nan
 		# print(df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())].POSTALCODE.apply(getStateCode))
@@ -83,10 +83,10 @@ def download_Load(df,radio,file_name):
 		# print(df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())])
 		df['STATE_CLEAN'] = df.STATECODE.apply(getState)
 
-		# # Records with city but without zipcode 
+		# # Records with city but without zipcode
 		df['POSTALCODE_clean'] = np.nan
 		df['POSTALCODE_clean'][df[(df.POSTALCODE.isnull()) & (df.CITY.notnull())].index] = df[(df.POSTALCODE.isnull()) & (df.CITY.notnull())].CITY.str.upper().apply(getZip)
-		
+
 		# Records with zipcode but without city
 		df['CITY_clean'] = df.POSTALCODE.apply(getCity)
 
@@ -95,14 +95,14 @@ def download_Load(df,radio,file_name):
 		df['STATE'] = df['STATE_CLEAN']
 
 		df[['ID','POSTALCODE','STATE','CITY','STATECODE']].to_csv(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Address Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
-		
+
 		fp = open(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Address Cleanse.csv', 'rb')
 		response = HttpResponse(fp.read(), content_type='text/csv')
 		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Address Cleanse.csv"'
 		fp.close()
 		return response
 
-	elif radio == 'name':
+	elif radio == 'Name':
 
 		df['NAME'] = df.NAME.apply(decapitalize)
 		df[['ID','NAME']].to_csv(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Name Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
@@ -112,7 +112,7 @@ def download_Load(df,radio,file_name):
 		fp.close()
 		return response
 
-	elif radio == 'website':
+	elif radio == 'Website':
 
 		df['WEBSITE'] = df.WEBSITE.apply(cleanup_website)
 		df[['ID','WEBSITE']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Website Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
@@ -127,7 +127,7 @@ def download_Load(df,radio,file_name):
 
 def QA(df,radio,file_name):
 	print("QA")
-	if radio == 'phone':
+	if radio == 'Phone':
 
 		df['Phone_clean'] = df.PHONE.apply(tidy_phone_ext)
 		df[['ID','PHONE','Phone_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Phone Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
@@ -135,10 +135,10 @@ def QA(df,radio,file_name):
 		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Phone Cleanse.csv', 'rb')
 		response = HttpResponse(fp.read(),content_type='text/csv')
 		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Phone Cleanse.csv"'
-		fp.close() 
-		return response 
+		fp.close()
+		return response
 
-	elif radio == 'zipcode':
+	elif radio == 'Zipcode':
 
 		df['Zipcode_clean'] = df.POSTALCODE.apply(clean4zipcodes)
 		print(df.POSTALCODE.apply(clean4zipcodes))
@@ -149,8 +149,8 @@ def QA(df,radio,file_name):
 		fp.close()
 		return response
 
-	elif radio == 'address':
-		
+	elif radio == 'Address':
+
 		# Records with zipcode but without state
 		df['STATECODE'] = np.nan
 		# print(df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())].POSTALCODE.apply(getStateCode))
@@ -158,10 +158,10 @@ def QA(df,radio,file_name):
 		# print(df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())])
 		df['STATE_CLEAN'] = df.STATECODE.apply(getState)
 
-		# # Records with city but without zipcode 
+		# # Records with city but without zipcode
 		df['POSTALCODE_clean'] = np.nan
 		df['POSTALCODE_clean'][df[(df.POSTALCODE.isnull()) & (df.CITY.notnull())].index] = df[(df.POSTALCODE.isnull()) & (df.CITY.notnull())].CITY.str.upper().apply(getZip)
-		
+
 		# Records with zipcode but without city
 		df['CITY_clean'] = df.POSTALCODE.apply(getCity)
 
@@ -173,7 +173,7 @@ def QA(df,radio,file_name):
 		fp.close()
 		return response
 
-	elif radio == 'name':
+	elif radio == 'Name':
 
 		df['NAME_clean'] = df.NAME.apply(decapitalize)
 		df[['ID','NAME','NAME_clean']].to_csv(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Name Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
@@ -183,7 +183,7 @@ def QA(df,radio,file_name):
 		fp.close()
 		return response
 
-	elif radio == 'website':
+	elif radio == 'Website':
 
 		df['WEBSITE_clean'] = df.WEBSITE.apply(cleanup_website)
 		df[['ID','WEBSITE','WEBSITE_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Website Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
@@ -230,5 +230,3 @@ def handle_uploaded_file(f):
     with open('static/uploads/name.txt', 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-
-

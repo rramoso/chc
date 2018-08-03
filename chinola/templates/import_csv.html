@@ -5,7 +5,7 @@
 {% block content %}
 <style type="text/css">
 	/*body{
-  
+
 }
 form{
   position: absolute;
@@ -18,7 +18,7 @@ form{
   border: 4px dashed #fff;
 }*/
 form p{
-  
+
   width: 100%;
   height: 100%;
   text-align: center;
@@ -66,24 +66,24 @@ form button:active{
 
 <div class="row">
 	<div class="col-md-1"></div>
-	
+
 
 	<form action="/chinola/" method="post" enctype="multipart/form-data"> {%csrf_token %}
 		<div class="col-md-3">
 			<div class="radio">
-			  <label><input type="radio" name="optradio" value='phone'>Phone</label>
+			  <label><input type="radio" name="optradio" value='Phone'>Phone</label>
 			</div>
 			<div class="radio ">
-			  <label><input type="radio" name="optradio" value='zipcode' >Zipcode</label>
+			  <label><input type="radio" name="optradio" value='Zipcode' >Zipcode</label>
 			</div>
 			<div class="radio">
-			  <label><input type="radio" name="optradio" value='name'>Name</label>
+			  <label><input type="radio" name="optradio" value='Name'>Name</label>
 			</div>
 			<div class="radio ">
-			  <label><input type="radio" name="optradio" value='address' >Address</label>
+			  <label><input type="radio" name="optradio" value='Address' >Address</label>
 			</div>
 			<div class="radio">
-			  <label><input type="radio" name="optradio" value='website'>Website</label>
+			  <label><input type="radio" name="optradio" value='Website'>Website</label>
 			</div>
 		</div>
 		<div class="col-md-4">
@@ -91,11 +91,11 @@ form button:active{
 			<p>Drag your files here or click in this area.</p>
 
 		</div>
-	    	<input type="submit" value = "Upload"  name="_upload"/>
-	    	
+	    	<input type="submit" class="btn btn-primary" value = "Upload"  name="_upload"/>
+
 	    <div class="col-md-4">
-			<input type="submit" value = "Download QA file"  name="_qa"/>
-	    	<input type="submit" value = "Download Load file" name="_load"/>
+			<input type="submit" class="btn btn-success" value = "Download QA file"  name="_qa"/>
+	    	<input type="submit" class="btn btn-success" value = "Download Load file" name="_load"/>
 	    </div>
 
 	</form>
@@ -122,7 +122,7 @@ form button:active{
 
 $(document).ready(function(){
 file_name = ''
-	
+
 
 	 $('form input').change(function () {
 	 	var fullPath = document.getElementById('csv_file').value;
@@ -138,7 +138,7 @@ file_name = ''
 	  });
 
  $('#load_data').click(function(){
- 	
+
   $.ajax({
    url:"/static/uploads/"+file_name,
    dataType:"text",
@@ -169,9 +169,18 @@ file_name = ''
   });
  });
   $('#load_cleaned_data').click(function(){
- 	
+    var radios = document.getElementsByName('optradio');
+    var cleanse_type = ''
+    for (var i = 0, length = radios.length; i < length; i++)
+    {
+     if (radios[i].checked)
+     {
+      cleanse_type = radios[i].value;
+      break;
+     }
+    }
   $.ajax({
-   url:"/static/uploads/"+file_name,
+   url:"/static/V2 DataTool - "+file_name+" - "+cleanse_type+" Cleanse.csv",
    dataType:"text",
    success:function(data)
    {
@@ -209,7 +218,7 @@ file_name = ''
 		{% endfor %}
 	</tr>
 	 {% for item in inserted_data %}
-	    <tr> 
+	    <tr>
 	        <td>{{ item.field1 }}</td>
 	        ...
 	        <td>{{ item.fieldN }}</td>
