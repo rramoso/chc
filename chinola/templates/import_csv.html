@@ -37,7 +37,7 @@ form input#csv_file{
   outline: none;
   opacity: 0;
 }
-form button{
+/*form button{
   margin: 0;
   color: #fff;
   background: #16a085;
@@ -50,7 +50,7 @@ form button{
   border-bottom: 4px solid #117A60;
   transition: all .2s ease;
   outline: none;
-}
+}*/
 form button:hover{
   background: #149174;
 	color: #0C5645;
@@ -91,11 +91,22 @@ form button:active{
 			<p>Drag your files here or click in this area.</p>
 
 		</div>
-	    	<input type="submit" class="btn btn-primary" value = "Upload"  name="_upload"/>
+		
 
 	    <div class="col-md-4">
-			<input type="submit" class="btn btn-success" value = "Download QA file"  name="_qa"/>
-	    	<input type="submit" class="btn btn-success" value = "Download Load file" name="_load"/>
+		    <div class="row">
+		    	<input type="submit" class="btn btn-primary" value = "Upload"  name="_upload"/>
+			</div>
+			<div class="row">
+				<input type="submit" class="btn btn-success" value = "Download QA file"  name="_qa"/>
+		    	<input type="submit" class="btn btn-success" value = "Download Load file" name="_load"/>
+			</div>	
+			<div class="row">
+				
+				<input type="button" id="load_data" class="btn btn-info" value = "Load Data"/>
+		    	<input type="submit" id="load_cleaned_data" class="btn btn-info" value = "Load Cleaned Data" name="_loadQA"/>
+
+			</div>		
 	    </div>
 
 	</form>
@@ -108,10 +119,6 @@ form button:active{
 	  <button type="submit">Upload</button>
 	</form> -->
 
-	<div align="center">
-    	<button type="button" id="load_data" class="btn btn-info">Load Data</button>
-    	<button type="button" id="load_cleaned_data" class="btn btn-info">Load Cleaned Data</button>
-    </div>
     <br />
     <div id="employee_table">
     </div>
@@ -169,6 +176,7 @@ file_name = ''
   });
  });
   $('#load_cleaned_data').click(function(){
+  	
     var radios = document.getElementsByName('optradio');
     var cleanse_type = ''
     for (var i = 0, length = radios.length; i < length; i++)
@@ -180,7 +188,7 @@ file_name = ''
      }
     }
   $.ajax({
-   url:"/static/V2 DataTool - "+file_name+" - "+cleanse_type+" Cleanse.csv",
+   url:"/static/V2 DataTool - "+file_name+" - "+cleanse_type+" Cleanse QA.csv",
    dataType:"text",
    success:function(data)
    {

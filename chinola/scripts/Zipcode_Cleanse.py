@@ -34,6 +34,8 @@ postalcode_field = 'SHIPPINGPOSTALCODE'
 
 def clean4zipcodes(zip_val):
     zip_val = str(zip_val)
+    if "nan" == zip_val:
+    	return np.nan
     if re.match(r'[A-Z]', zip_val) == None:
             if isinstance(zip_val, str):
                 return zip_val.zfill(5)

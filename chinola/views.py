@@ -38,7 +38,13 @@ def index(request):
 			response = HttpResponseNotModified()
 
 			return response
-		if "_qa" in request.POST:
+		elif "_loadQA" in request.POST:
+			print('_loadQA')
+			loadQA(df,radio,file_name)
+			response = HttpResponseNotModified()
+
+			return response
+		elif "_qa" in request.POST:
 			return QA(df,radio,file_name)
 
 		elif "_load" in request.POST:
@@ -130,11 +136,11 @@ def QA(df,radio,file_name):
 	if radio == 'Phone':
 
 		df['Phone_clean'] = df.PHONE.apply(tidy_phone_ext)
-		df[['ID','PHONE','Phone_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Phone Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
+		df[['ID','PHONE','Phone_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Phone Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
 		# print(request.POST.get('phone') == 'on')
-		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Phone Cleanse.csv', 'rb')
+		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Phone Cleanse QA.csv', 'rb')
 		response = HttpResponse(fp.read(),content_type='text/csv')
-		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Phone Cleanse.csv"'
+		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Phone Cleanse QA.csv"'
 		fp.close()
 		return response
 
@@ -142,10 +148,10 @@ def QA(df,radio,file_name):
 
 		df['Zipcode_clean'] = df.POSTALCODE.apply(clean4zipcodes)
 		print(df.POSTALCODE.apply(clean4zipcodes))
-		df[['ID','POSTALCODE','Zipcode_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Zipcode Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
-		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Zipcode Cleanse.csv', 'rb')
+		df[['ID','POSTALCODE','Zipcode_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Zipcode Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Zipcode Cleanse QA.csv', 'rb')
 		response = HttpResponse(fp.read(), content_type='text/csv')
-		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Zipcode Cleanse.csv"'
+		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Zipcode Cleanse QA.csv"'
 		fp.close()
 		return response
 
@@ -166,38 +172,80 @@ def QA(df,radio,file_name):
 		df['CITY_clean'] = df.POSTALCODE.apply(getCity)
 
 
-		df[['ID','POSTALCODE','STATE','CITY','STATECODE','STATE_CLEAN','POSTALCODE_clean','CITY_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Address Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
-		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Address Cleanse.csv', 'rb')
+		df[['ID','POSTALCODE','STATE','CITY','STATECODE','STATE_CLEAN','POSTALCODE_clean','CITY_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Address Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Address Cleanse QA.csv', 'rb')
 		response = HttpResponse(fp.read(), content_type='text/csv')
-		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Address Cleanse.csv"'
+		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Address Cleanse QA.csv"'
 		fp.close()
 		return response
 
 	elif radio == 'Name':
 
 		df['NAME_clean'] = df.NAME.apply(decapitalize)
-		df[['ID','NAME','NAME_clean']].to_csv(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Name Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
-		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Name Cleanse.csv', 'rb')
+		df[['ID','NAME','NAME_clean']].to_csv(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Name Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Name Cleanse QA.csv', 'rb')
 		response = HttpResponse(fp.read(), content_type='text/csv')
-		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Name Cleanse.csv"'
+		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Name Cleanse QA.csv"'
 		fp.close()
 		return response
 
 	elif radio == 'Website':
 
 		df['WEBSITE_clean'] = df.WEBSITE.apply(cleanup_website)
-		df[['ID','WEBSITE','WEBSITE_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Website Cleanse.csv',index = False, quoting = csv.QUOTE_ALL)
-		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Website Cleanse.csv', 'rb')
+		df[['ID','WEBSITE','WEBSITE_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Website Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		fp = open(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Website Cleanse QA.csv', 'rb')
 		response = HttpResponse(fp.read(), content_type='text/csv')
-		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Website Cleanse.csv"'
+		response['Content-Disposition'] = 'attachment; filename="V2 DataTool - '+file_name+' - Website Cleanse QA.csv"'
 		fp.close()
 		return response
 
 
 
+def loadQA(df,radio,file_name):
+	if radio == 'Phone':
+
+		df['Phone_clean'] = df.PHONE.apply(tidy_phone_ext)
+		df[['ID','PHONE','Phone_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Phone Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		# print(request.POST.get('phone') == 'on')
+		
+
+	elif radio == 'Zipcode':
+
+		df['Zipcode_clean'] = df.POSTALCODE.apply(clean4zipcodes)
+		print(df.POSTALCODE.apply(clean4zipcodes))
+		df[['ID','POSTALCODE','Zipcode_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Zipcode Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		
+
+	elif radio == 'Address':
+
+		# Records with zipcode but without state
+		df['STATECODE'] = np.nan
+		# print(df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())].POSTALCODE.apply(getStateCode))
+		df['STATECODE'][df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())].index] = df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())].POSTALCODE.apply(getStateCode)
+		# print(df[(df.STATE.isnull()) & (df.POSTALCODE.notnull())])
+		df['STATE_CLEAN'] = df.STATECODE.apply(getState)
+
+		# # Records with city but without zipcode
+		df['POSTALCODE_clean'] = np.nan
+		df['POSTALCODE_clean'][df[(df.POSTALCODE.isnull()) & (df.CITY.notnull())].index] = df[(df.POSTALCODE.isnull()) & (df.CITY.notnull())].CITY.str.upper().apply(getZip)
+
+		# Records with zipcode but without city
+		df['CITY_clean'] = df.POSTALCODE.apply(getCity)
 
 
+		df[['ID','POSTALCODE','STATE','CITY','STATECODE','STATE_CLEAN','POSTALCODE_clean','CITY_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Address Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		
+	elif radio == 'Name':
 
+		df['NAME_clean'] = df.NAME.apply(decapitalize)
+		df[['ID','NAME','NAME_clean']].to_csv(settings.STATIC_ROOT+'/V2 DataTool - '+file_name+' - Name Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		
+
+	elif radio == 'Website':
+
+		df['WEBSITE_clean'] = df.WEBSITE.apply(cleanup_website)
+		df[['ID','WEBSITE','WEBSITE_clean']].to_csv(settings.STATIC_ROOT+'/'+'V2 DataTool - '+file_name+' - Website Cleanse QA.csv',index = False, quoting = csv.QUOTE_ALL)
+		
 
 def phone(request):
 
